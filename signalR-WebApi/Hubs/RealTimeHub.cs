@@ -15,7 +15,7 @@ public class RealTimeHub : Hub
 
     public async Task NewWindowLoader(){
         TotalViews++;
-        // send upadete to all clients
+        // send update to all clients
         await Clients.All.SendAsync("updateTotalViews", TotalViews);
     }
 }
