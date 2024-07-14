@@ -2,7 +2,12 @@
   <label>{{ title }}</label>
 </div>
 <div>
-  <button (click)="toggleLabel()">OK</button>  
+  <form [formGroup]="formMessage" (ngSubmit)="toggleLabel()">
+    <div>
+      <textarea cols="50" rows="12" formControlName="msg"></textarea>
+    </div>
+    <button type="submit">OK</button>  
+  </form>
 </div>
 <div>
   <h5>Number of views {{ totalView }}</h5>
