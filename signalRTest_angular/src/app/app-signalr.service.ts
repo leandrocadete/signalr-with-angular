@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,11 @@ export class AppSignalrService {
   hubConnection: signalR.HubConnection;
 
   constructor() {
+    
+    const api_url = `${environment.host_webapi}:${environment.apiport}`;
+
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5137/hubs/realtimehub') // SignalR hub URL
+      .withUrl(`${api_url}/hubs/realtimehub`) // SignalR hub URL
       .build();
   }
 

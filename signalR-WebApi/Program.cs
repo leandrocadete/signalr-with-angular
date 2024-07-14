@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using Model;
 using SignalR;
 
 
@@ -10,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddCors();
+builder.Services.AddControllers();
+//builder.Services.AddMvcCore(); // doing
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +29,13 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
+app.MapPost("/LoginHelper", () => {
+    return Task.FromResult(new User(){
+        Name = "User Example",
+        Email = "emailteste",
+        Id = 150
+    });
+});
 app.MapGet("/weatherforecast", () =>
 {
     var forecast =  Enumerable.Range(1, 5).Select(index =>
@@ -41,10 +51,15 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
+app.MapControllers(); // doing
+
 app.MapHub<RealTimeHub>("/hubs/Realtimehub");
 app.MapHub<UserHub>("/hubs/userCount");
 //app.MapControllers();
 app.UseCors((x) => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials());
+
+//app.UseMvc();
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
