@@ -56,6 +56,14 @@ app.MapControllers(); // doing
 app.MapHub<RealTimeHub>("/hubs/Realtimehub");
 app.MapHub<UserHub>("/hubs/userCount");
 //app.MapControllers();
+
+app.Use(async (context, next) => {
+    var hubContext = context.RequestServices.GetRequiredService<IHubContext<RealTimeHub>>();
+    if(next != null) {
+        await next.Invoke();
+    }
+});
+
 app.UseCors((x) => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials());
 
 //app.UseMvc();
