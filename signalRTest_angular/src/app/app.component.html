@@ -1,16 +1,7 @@
-<div>
-  <label>{{ title }}</label>
-</div>
-<div>
-  <form [formGroup]="formMessage" (ngSubmit)="toggleLabel()">
-    <div>
-      <textarea cols="50" rows="12" formControlName="msg"></textarea>
-    </div>
-    <button type="submit">OK</button>  
-  </form>
-</div>
-<div>
-  <h5>Number of views {{ totalView }}</h5>
-</div>
 
-<router-outlet></router-outlet>
+<div class="container">
+    
+    <router-outlet>
+    </router-outlet>
+    
+</div>

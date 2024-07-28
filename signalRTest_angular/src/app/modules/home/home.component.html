@@ -1,0 +1,21 @@
+<h4>Home</h4>
+
+<div class="home-container">
+  <div>
+    <label>{{ title }}</label>
+  </div>
+  <div>
+    <form [formGroup]="formMessage" (ngSubmit)="toggleLabel()">
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Send message</mat-label>
+          <textarea matInput cols="50" rows="12" formControlName="ctrlMsg"></textarea>
+        </mat-form-field>
+      </div>
+      <button mat-button mat-raised-button color="primary" type="submit">OK</button>
+    </form>
+  </div>
+  <div>
+    <h5>Number of views {{ totalView }}</h5>
+  </div>
+</div>

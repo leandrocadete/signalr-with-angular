@@ -55,6 +55,7 @@ app.MapControllers(); // doing
 
 app.MapHub<RealTimeHub>("/hubs/Realtimehub");
 app.MapHub<UserHub>("/hubs/userCount");
+//app.UseMiddleware()
 //app.MapControllers();
 
 app.Use(async (context, next) => {
