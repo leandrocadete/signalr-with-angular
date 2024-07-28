@@ -1,3 +1,42 @@
+# Create Module
+
+## generate module
+`ng g module`
+## generate component inside a module
+`ng g c modules/login --m login`
+
+
+
+### Generates a module with a component and add a router in lazy load app-routing.module
+```
+ng g m modules/home --module app --routing true --route home
+```
+### Generate Module and Routing Module
+```
+ng g m modules/acoes --routing true --route acoes
+
+```
+### Generate Component inside a Module
+```
+ng g c acoes-pm --module modules/acoes 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # SignalRTest
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.2.
