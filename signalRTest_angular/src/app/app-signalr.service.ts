@@ -17,7 +17,7 @@ export class AppSignalrService {
     const api_url = `${environment.host_webapi}:${environment.apiport}`;
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${api_url}/hubs/realtimehub`) // SignalR hub URL
+      .withUrl(`${api_url}/hubs/realtimehub`, signalR.HttpTransportType.WebSockets) // SignalR hub URL
       .build();
   }
 
