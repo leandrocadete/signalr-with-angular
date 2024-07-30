@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using SignalR;
 
 namespace Api.Controller;
 
@@ -8,16 +9,19 @@ namespace Api.Controller;
 [ApiController]
 public class LoginController : ControllerBase {
     private readonly IHubContext<RealTimeHub> _hubContext;
+    private readonly IHubContext<UserHub> _userHubContext;
 
-    public LoginController(IHubContext<RealTimeHub> hubContext) {
+    public LoginController(IHubContext<RealTimeHub> hubContext, IHubContext<UserHub>  userHub) {
         _hubContext = hubContext;
+        _userHubContext = userHub;
     }
 
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] Model.User user) {
         try {
-            user.Id = user.Id +1;
-            user.Validate(user.Id - 1);
+            
+            user.Validate();
+            
             return Ok(user);
         } catch (Exception ex) {
             System.Console.WriteLine(ex);
