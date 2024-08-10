@@ -59,7 +59,7 @@ app.MapGet("/weatherforecast", () =>
 app.MapControllers(); // doing
 
 app.MapHub<RealTimeHub>("/hubs/Realtimehub");
-app.MapHub<UserHub>("/hubs/userCount");
+app.MapHub<UserHub>("/hubs/UserHub");
 //app.UseMiddleware()
 //app.MapControllers();
 

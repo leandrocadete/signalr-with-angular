@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -15,10 +16,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     HomeRoutingModule,
     ReactiveFormsModule,
-    MatFormFieldModule,    
+    MatInputModule,
+    MatFormFieldModule,
     FormsModule,
-    MatButtonModule,
-    MatFormFieldModule
+    MatButtonModule
   ]
 })
 export class HomeModule { }

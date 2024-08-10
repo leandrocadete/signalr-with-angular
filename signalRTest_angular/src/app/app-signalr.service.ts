@@ -8,16 +8,20 @@ import { environment } from 'src/environments/environment';
 })
 export class AppSignalrService {
 
-  
 
-  hubConnection: signalR.HubConnection;
+
+  private hubConnection: signalR.HubConnection;
+  private userHubConnection: signalR.HubConnection;
 
   constructor() {
-    
+
     const api_url = `${environment.host_webapi}:${environment.apiport}`;
 
+    this.userHubConnection = new signalR.HubConnectionBuilder()
+      .withUrl(`${api_url}/hubs/userhub`, { withCredentials: false })
+      .build();
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${api_url}/hubs/realtimehub`, signalR.HttpTransportType.WebSockets) // SignalR hub URL
+      .withUrl(`${api_url}/hubs/realtimehub`, { withCredentials: false }) // SignalR hub URL
       .build();
   }
 
@@ -39,7 +43,7 @@ export class AppSignalrService {
 
   receiveMessage(): Observable<string> {
     return new Observable<string>((observer) => {
-      
+
       this.hubConnection.on('ReceiveMessage', (message: string) => {
         observer.next(message);
       });
@@ -66,4 +70,36 @@ export class AppSignalrService {
     this.hubConnection.invoke("NewWindowLoader");
   }
 
+  // Subscription to group ()
+  subscribe = (email: any) => {
+    return new Promise((resolve, reject) => {
+      if (this.userHubConnection.state !== signalR.HubConnectionState.Connected) {
+        this.userHubConnection.start().then((v) => {
+          this.userHubConnection.invoke("Subscribe", email)
+          .then(r => resolve(true))
+          .catch(r => reject(false));
+        
+        }).catch(r => reject(false));
+      } else {
+        this.userHubConnection.invoke("Subscribe", email)
+          .then(r => resolve(true))
+          .catch(r => reject(false));
+      }});
+  }
+  unsubscribe = (email: any) => {
+    return new Promise((resolve, reject) => {
+      if (this.userHubConnection.state !== signalR.HubConnectionState.Connected) {
+        this.userHubConnection.start().then((v) => {
+          this.userHubConnection.invoke("Unsubscribe", email)
+          .then(r => resolve(true))
+          .catch(r => reject(false));
+
+        }).catch(r => reject(false));
+      } else {
+        this.userHubConnection.invoke("Unsubscribe", email)
+        .then(r => resolve(true))
+        .catch(r => reject(false));
+      }
+    });
+  }
 }

@@ -26,6 +26,10 @@ export class HomeComponent implements OnInit {
       });
 
       this.signalRService.updateTotalViews().subscribe((views) => this.totalView = views);
+
+      const email = localStorage.getItem("email");
+
+      this.signalRService.subscribe(email).then(s => console.info("Ok subscription... "));
     });    
   }
 

@@ -35,27 +35,21 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     try {
-
       if (this.formLogin.valid) {
-        //this.cfg.data = "Usuário ou senha inválido!" ;
         this.loginService
           .login(this.formLogin.value.ctrlUsername, this.formLogin.value.ctrlPassword)
-          .then((r) => {
-            //if(r)
-            console.info(r);
-            r.json().then(v => {
-              console.info("Json %o", v);
+          .then((r) => {            
+            r.json().then(v => {              
               if (v.success) {
-              const token = v.value;
-              
-              this.storeToken(token);
+                const token = v.value;
+                this.storeToken(token, this.formLogin.value.ctrlUsername);
+                
                 this.snackBar
-                .open("Login successfull", "OK", { duration: 3000, verticalPosition: "top", horizontalPosition: "right" })
-                .afterDismissed()
-                .subscribe(() => {
-                  // TODO: redirect to home
-                  this.route.navigate(['/home']);
-                });
+                  .open("Login successfull", "OK", { duration: 3000, verticalPosition: "top", horizontalPosition: "right" })
+                  .afterDismissed()
+                  .subscribe(() => {
+                    this.route.navigate(['/home']);
+                  });
               }
             });
           }).catch((err) => {
@@ -71,13 +65,16 @@ export class LoginComponent implements OnInit {
   /**
    * Store jwt token
    *  
-   * */ 
-  storeToken(token: any) {
+   * */
+  storeToken(token: string, email: string) {
     localStorage.setItem('token', token);
+    localStorage.setItem('email', email);
   }
 
   logout(): void {
     localStorage.removeItem('token');
     this.snackBar.open("Logout realizado com sucesso.", "Ok", this.cfg);
   }
+
+
 }
