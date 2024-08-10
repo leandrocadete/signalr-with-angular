@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
-
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { CSnackBar } from './CSnackBar';
+import { LoginService } from './service/login.service';
+import { Route, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,57 +11,73 @@ import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginService: any;
-  formLogin: FormGroup = new FormGroup(
-   {
-    ctrlUsername: new FormControl(null, [Validators.required]),
-    ctrlPassword: new FormControl(null, [Validators.required])
-   } 
-  );
 
-  constructor(private snackBar: MatSnackBar) { }
+  formLogin: FormGroup = new FormGroup(
+    {
+      ctrlUsername: new FormControl(null, [Validators.required]),
+      ctrlPassword: new FormControl(null, [Validators.required])
+    }
+  );
+  cfg: MatSnackBarConfig = {
+    duration: 120000,
+    horizontalPosition: 'end',
+    verticalPosition: 'top',
+    panelClass: 'custom-snackbar'
+  };
+
+  constructor(private snackBar: MatSnackBar,
+    private loginService: LoginService,
+    private route: Router
+  ) { }
 
   ngOnInit(): void {
   }
 
   login(): void {
-    //this.loginService.login(this.username, this.password);
     try {
-      
-      console.log("TODO: Login %o", this.formLogin.value);
-      this.loginService.login();
-    } catch (ex) {
-      this.snackBar.openFromComponent(PizzaPartyAnnotatedComponent, 
-      { duration: 30000, horizontalPosition: 'end', verticalPosition: 'top', panelClass: 'green' });
 
+      if (this.formLogin.valid) {
+        //this.cfg.data = "Usuário ou senha inválido!" ;
+        this.loginService
+          .login(this.formLogin.value.ctrlUsername, this.formLogin.value.ctrlPassword)
+          .then((r) => {
+            //if(r)
+            console.info(r);
+            r.json().then(v => {
+              console.info("Json %o", v);
+              if (v.success) {
+              const token = v.value;
+              
+              this.storeToken(token);
+                this.snackBar
+                .open("Login successfull", "OK", { duration: 3000, verticalPosition: "top", horizontalPosition: "right" })
+                .afterDismissed()
+                .subscribe(() => {
+                  // TODO: redirect to home
+                  this.route.navigate(['/home']);
+                });
+              }
+            });
+          }).catch((err) => {
+            console.error(err);
+          });
+      } else {
+        this.snackBar.open("Usuário ou senha invalido.", "Ok", this.cfg);
+      }
+    } catch (ex) {
+      this.snackBar.open(`Erro. ${ex}`, "Ok");
     }
+  }
+  /**
+   * Store jwt token
+   *  
+   * */ 
+  storeToken(token: any) {
+    localStorage.setItem('token', token);
   }
 
   logout(): void {
-    console.log("TODO: Logout");
+    localStorage.removeItem('token');
+    this.snackBar.open("Logout realizado com sucesso.", "Ok", this.cfg);
   }
-}
-
-
-@Component({
-  selector: 'snack-bar-annotated-component-example-snack',
-  template: ` 
-<div style="display: flex"> 
-  <span style="margin: auto auto auto 0" class="example-pizza-party" matSnackBarLabel>
-    Custom Message
-  </span>
-  <span style="margin: auto 5px auto 0" matSnackBarActions>
-    <button mat-icon-button  matSnackBarAction (click)="snackBarRef.dismissWithAction()">
-      <mat-icon>check</mat-icon>
-    </button>
-  </span>
-</div>
-  `,
-  
-  styleUrls: ['./login.component.scss'],
-  standalone: true,  
-  imports: [MatIconModule]
-})
-export class PizzaPartyAnnotatedComponent {
-  snackBarRef = inject(MatSnackBarRef);
 }

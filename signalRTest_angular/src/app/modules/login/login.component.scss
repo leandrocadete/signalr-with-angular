@@ -1,4 +1,14 @@
 
+::ng-deep {
+    .custom-snackbar {
+        color: hotpink;
+        button[mat-icon-button] {
+            height: 35px;
+            width: 35px;
+        }
+    }
+
+}
 .example-pizza-party {
     color: hotpink;
 }

@@ -5,7 +5,8 @@
 ## generate component inside a module
 `ng g c modules/login --m login`
 
-
+## service
+`ng g service serviceName`
 
 ### Generates a module with a component and add a router in lazy load app-routing.module
 ```

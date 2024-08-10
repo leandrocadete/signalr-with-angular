@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Model;
+using Model.Services;
+using Service;
 using SignalR;
 
 
@@ -12,8 +14,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddCors();
 builder.Services.AddControllers();
+builder.Services.AddTransient<ILogin, Login>();
 //builder.Services.AddMvcCore(); // doing
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -65,7 +70,8 @@ app.Use(async (context, next) => {
     }
 });
 
-app.UseCors((x) => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials());
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());  // add CORS for angular 
+
 
 //app.UseMvc();
 
