@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppSignalrService } from 'src/app/app-signalr.service';
 
 @Component({
@@ -14,8 +15,8 @@ export class HomeComponent implements OnInit {
   formMessage: FormGroup = new FormGroup({
     ctrlMsg: new FormControl('')
   });
-  
-  constructor(private signalRService: AppSignalrService){}
+
+  constructor(private signalRService: AppSignalrService, private snackbar: MatSnackBar) { }
 
 
   ngOnInit(): void {
@@ -29,8 +30,14 @@ export class HomeComponent implements OnInit {
 
       const email = localStorage.getItem("email");
 
-      this.signalRService.subscribe(email).then(s => console.info("Ok subscription... "));
-    });    
+      this.signalRService.subscribe(email).then(s => {
+        console.info("Ok subscription... ");
+        this.signalRService.fromGroupAdm()
+        .then(message => this.snackbar.open(message, "Ok", { duration: 30000, horizontalPosition: "right", verticalPosition: "top" }))
+        .catch(err => console.error(err));
+      });
+      
+    });
   }
 
   sendMessage(message: string): void {

@@ -75,31 +75,44 @@ export class AppSignalrService {
     return new Promise((resolve, reject) => {
       if (this.userHubConnection.state !== signalR.HubConnectionState.Connected) {
         this.userHubConnection.start().then((v) => {
+          console.info("Subscribe - connected o userHub!");
           this.userHubConnection.invoke("Subscribe", email)
-          .then(r => resolve(true))
-          .catch(r => reject(false));
-        
+            .then(r => resolve(r))
+            .catch(r => reject(false));
+
         }).catch(r => reject(false));
       } else {
         this.userHubConnection.invoke("Subscribe", email)
-          .then(r => resolve(true))
+          .then(r => resolve(r))
           .catch(r => reject(false));
-      }});
+      }
+    });
   }
   unsubscribe = (email: any) => {
     return new Promise((resolve, reject) => {
       if (this.userHubConnection.state !== signalR.HubConnectionState.Connected) {
         this.userHubConnection.start().then((v) => {
+          console.info("Unsubscribe - connected o userHub!");
           this.userHubConnection.invoke("Unsubscribe", email)
-          .then(r => resolve(true))
-          .catch(r => reject(false));
+            .then(r => resolve(true))
+            .catch(r => reject(false));
 
         }).catch(r => reject(false));
       } else {
         this.userHubConnection.invoke("Unsubscribe", email)
-        .then(r => resolve(true))
-        .catch(r => reject(false));
+          .then(r => resolve(true))
+          .catch(r => reject(false));
       }
     });
   }
+
+  fromGroupAdm(): Promise<string> {
+    return new Promise<string>((resolver, reject) => {
+      this.userHubConnection.on("fromGroupAdm", (message: string) => {
+        resolver(message);
+      });
+    });
+  }
+
+
 }

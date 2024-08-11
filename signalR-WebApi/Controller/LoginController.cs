@@ -52,4 +52,16 @@ public class LoginController : ControllerBase {
         }
     }
 
+    [HttpPost("[action]/{group}")]
+    public async Task<IActionResult> NotifyClientsByGroup([FromRoute] string group, [FromBody] string message) {
+
+        try {
+            await _userHubContext.Clients.Group(group).SendAsync("fromGroupAdm", $"Notification to the group: {group} - {message}");
+            System.Console.WriteLine("NotifyClientsByGroup - Group name {0} - message {1}", group, message);
+            return Ok(await Task.FromResult(new {message ="Ok"}));
+        } catch (Exception ex) {
+            return await Task.FromResult(BadRequest(ex.Message));
+        }
+    }
+
 }
