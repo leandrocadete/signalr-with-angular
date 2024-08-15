@@ -33,10 +33,13 @@ export class HomeComponent implements OnInit {
       this.signalRService.subscribe(email).then(s => {
         console.info("Ok subscription... ");
         this.signalRService.fromGroupAdm()
-        .then(message => this.snackbar.open(message, "Ok", { duration: 30000, horizontalPosition: "right", verticalPosition: "top" }))
-        .catch(err => console.error(err));
+          .subscribe({
+            next: message =>
+              this.snackbar.open(message, "Ok", { duration: 30000, horizontalPosition: "right", verticalPosition: "top" }),
+            error: err => console.error(err)
+          });
       });
-      
+
     });
   }
 

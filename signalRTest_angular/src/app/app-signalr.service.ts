@@ -56,14 +56,11 @@ export class AppSignalrService {
 
 
   updateTotalViews(): Observable<number> {
-
     return new Observable<number>(observe => {
-
       this.hubConnection.on('updateTotalViews', (totalviews: number) => {
         observe.next(totalviews);
       });
-    })
-
+    });
   }
 
   newWindowLoadedOnClient(): void {
@@ -106,10 +103,10 @@ export class AppSignalrService {
     });
   }
 
-  fromGroupAdm(): Promise<string> {
-    return new Promise<string>((resolver, reject) => {
+  fromGroupAdm(): Observable<string> {
+    return new Observable<string>((observe) => {
       this.userHubConnection.on("fromGroupAdm", (message: string) => {
-        resolver(message);
+        observe.next(message);        
       });
     });
   }

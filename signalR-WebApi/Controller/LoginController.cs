@@ -64,4 +64,15 @@ public class LoginController : ControllerBase {
         }
     }
 
+    [HttpPost("[action]/{group}")]
+    public async Task<IActionResult> NotifyAllClients([FromBody] string message) {
+
+        try {
+            await _userHubContext.Clients.All.SendAsync("fromGroupAdm", $"Notification to All  clients: - {message}");
+            System.Console.WriteLine("NotifyClientsByGroup - message {0}", message);
+            return Ok(await Task.FromResult(new {message ="Ok"}));
+        } catch (Exception ex) {
+            return await Task.FromResult(BadRequest(ex.Message));
+        }
+    }
 }

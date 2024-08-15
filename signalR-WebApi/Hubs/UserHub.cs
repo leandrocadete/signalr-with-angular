@@ -18,7 +18,7 @@ public class UserHub : Hub
         //     return;
         // }
         await Groups.AddToGroupAsync(Context.ConnectionId, group);
-        
+        System.Console.WriteLine("Addo to groups {0}", group.Length);
         
     }
 
