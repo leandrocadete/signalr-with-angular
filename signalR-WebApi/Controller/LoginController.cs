@@ -64,7 +64,7 @@ public class LoginController : ControllerBase {
         }
     }
 
-    [HttpPost("[action]/{group}")]
+    [HttpPost("[action]")]
     public async Task<IActionResult> NotifyAllClients([FromBody] string message) {
 
         try {

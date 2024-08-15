@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
 
       const email = localStorage.getItem("email");
 
-      this.signalRService.subscribe(email).then(s => {
+      this.signalRService.subscribeToGroup(email).then(s => {
         console.info("Ok subscription... ");
         this.signalRService.fromGroupAdm()
           .subscribe({

@@ -68,7 +68,7 @@ export class AppSignalrService {
   }
 
   // Subscription to group ()
-  subscribe = (email: any) => {
+  subscribeToGroup = (email: any) => {
     return new Promise((resolve, reject) => {
       if (this.userHubConnection.state !== signalR.HubConnectionState.Connected) {
         this.userHubConnection.start().then((v) => {
@@ -85,7 +85,7 @@ export class AppSignalrService {
       }
     });
   }
-  unsubscribe = (email: any) => {
+  unsubscribeFromGroup = (email: any) => {
     return new Promise((resolve, reject) => {
       if (this.userHubConnection.state !== signalR.HubConnectionState.Connected) {
         this.userHubConnection.start().then((v) => {
