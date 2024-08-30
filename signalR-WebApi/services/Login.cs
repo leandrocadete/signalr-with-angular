@@ -9,7 +9,8 @@ namespace Service;
 
 public class Login : ILogin
 {
-    private const string secretKey = "32144334334343433443434399021332113";
+    public const string secretKey = "32144334334343433443434399021332113";
+    public const string issuer = "signalr-side-project";
     Result ILogin.Login(User user)
     {
         System.Console.WriteLine("Login service");
@@ -32,7 +33,8 @@ public class Login : ILogin
                 new Claim(ClaimTypes.Email, user.Email),
             ]),
             Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            Issuer = Login.issuer
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var strToken = tokenHandler.WriteToken(token);

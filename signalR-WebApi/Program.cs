@@ -3,7 +3,9 @@ using Model;
 using Model.Services;
 using Service;
 using SignalR;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,20 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<ILogin, Login>();
 //builder.Services.AddMvcCore(); // doing
 
+#region ........ JWT ........
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+    opt.TokenValidationParameters = new TokenValidationParameters() {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = Login.issuer,
+        ValidAudience = Login.issuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Login.secretKey))
+    };
+});
+
+#endregion ...................
 var app = builder.Build();
 
 
@@ -56,12 +72,16 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
+#region ........ TESTING ..........
+app.UseAuthentication();
+app.UseAuthorization();
+#endregion ........................
+
 app.MapControllers(); // doing
 
 app.MapHub<RealTimeHub>("/hubs/Realtimehub");
 app.MapHub<UserHub>("/hubs/UserHub");
 //app.UseMiddleware()
-//app.MapControllers();
 
 app.Use(async (context, next) => {
     var hubContext = context.RequestServices.GetRequiredService<IHubContext<RealTimeHub>>();

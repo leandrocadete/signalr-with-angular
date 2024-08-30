@@ -12,14 +12,13 @@ public class UserHub : Hub
     {
         System.Console.WriteLine("Subscribe method - group: {0} - connectionId {1}", group, Context.ConnectionId);
         if (string.IsNullOrEmpty(group)) return;
-        // if (GroupJoined.Any(g => g == group))
-        // {
-        //     System.Console.WriteLine("Already joinned in the group array!");
-        //     return;
-        // }
+        if (GroupJoined.Any(g => g == group))
+        {
+            System.Console.WriteLine("Already joinned in the group array!");
+            return;
+        }
         await Groups.AddToGroupAsync(Context.ConnectionId, group);
-        System.Console.WriteLine("Addo to groups {0}", group.Length);
-        
+        System.Console.WriteLine("Add to groups {0} {1}", GroupJoined.Count, string.Join(',', GroupJoined));
     }
 
     public async Task Unsubscribe(string group)
