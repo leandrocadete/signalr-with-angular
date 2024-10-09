@@ -11,6 +11,7 @@ public class Login : ILogin
 {
     public const string secretKey = "32144334334343433443434399021332113";
     public const string issuer = "signalr-side-project";
+    public const string audience = "signalr-side-project";
     Result ILogin.Login(User user)
     {
         System.Console.WriteLine("Login service");
@@ -34,9 +35,12 @@ public class Login : ILogin
             ]),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            Issuer = Login.issuer
+            Issuer = Login.issuer,
+            Audience = Login.audience,
+            
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
+        
         var strToken = tokenHandler.WriteToken(token);
 
         System.Console.WriteLine("strToken {0}", strToken);
