@@ -20,17 +20,17 @@ builder.Services.AddTransient<ILogin, Login>();
 //builder.Services.AddMvcCore(); // doing
 
 #region ........ JWT ........
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
-    opt.TokenValidationParameters = new TokenValidationParameters() {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = Login.issuer,
-        ValidAudience = Login.issuer,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Login.secretKey))
-    };
-});
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+//    opt.TokenValidationParameters = new TokenValidationParameters() {
+//        ValidateIssuer = true,
+//        ValidateAudience = true,
+//        ValidateLifetime = true,
+//        //ValidateIssuerSigningKey = true,
+//        ValidIssuer = Login.issuer,
+//        ValidAudience = Login.issuer,
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Login.secretKey))
+//    };
+//});
 
 #endregion ...................
 var app = builder.Build();
@@ -73,7 +73,7 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 #region ........ TESTING ..........
-app.UseAuthentication();
+//app.UseAuthentication();
 app.UseAuthorization();
 #endregion ........................
 
