@@ -58,4 +58,8 @@ export class HomeComponent implements OnInit {
     this.sendMessage(msg);
     this.signalRService.newWindowLoadedOnClient();
   }
+
+  sumArray(vet: number[]) {
+    return vet.reduce((a, b) => a + b, 0);
+  }
 }

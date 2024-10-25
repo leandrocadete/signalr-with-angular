@@ -2,9 +2,11 @@
 
 ## generate module
 `ng g module`
+`ng g module modules/acoes`
 ## generate component inside a module
 `ng g c modules/login --m login`
 
+`ng g c modules/acoes --m acoes`
 ## service
 `ng g service serviceName`
 

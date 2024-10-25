@@ -1,0 +1,13 @@
+<!-- <p *ngFor="let item of dataSource">{{item}}</p> -->
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of arr">
+      <td>{{ row.value }}</td>
+    </tr>
+  </tbody>
+</table>
