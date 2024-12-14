@@ -1,5 +1,7 @@
 
 
+using Model.Services;
+
 namespace Model;
 public class User {
 
@@ -12,5 +14,14 @@ public class User {
     public bool Validate()
     {
        return Pwd.Length > 6 && Pwd.Length < 25;
+    }
+
+    public bool ValidateToken(ILogin login) {
+        var result = login.Login(this);
+        if(!result.Success) return false;
+
+        if (result.Value is null) return false;
+
+        return true;
     }
 }
